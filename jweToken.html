@@ -1,16 +1,79 @@
 <html>
 <head>
     <script type="text/javascript">
-        const params = new URLSearchParams(window.location.search)
-        if (params.has("token")) {
-            const encodedToken = params.get("token")
-            const token = decodeURIComponent(params.get("token"))
-            console.log(token)
-            document.cookie = `jweToken=${encodedToken}; path=/`;
-            window.location.href = "/dashboard/"
-        } else {
-            console.log("No Token Found")
+        const dashboardPrefix = "/dashboard/"
+        function auth() {
+            const params = new URLSearchParams(window.location.search)
+            if (params.has("fetchUrl")) {
+                const encodedFetchUrl = params.get("fetchUrl")
+                const fetchUrl = decodeURIComponent(encodedFetchUrl)
+                fetchJwtAndLogin(fetchUrl);
+            } else {
+                setMessage("Fetch Url Missing")
+            }
+        }
+
+        function fetchJwtAndLogin(fetchUrl) {
+            fetch(fetchUrl, {
+                "method": "GET"
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data["token"]) {
+                    setMessage("Invalid Fetch URL")
+                    return
+                }
+                csrfLogin(data.token)
+            })
+            .catch((err) => {
+                setMessage("Invalid Fetch URL")
+            });
+        }
+
+        function csrfLogin(jwtToken) {
+            fetch(`${dashboardPrefix}api/v1/csrftoken/login`, {
+                "method": "GET"
+            })
+            .then(response => response.json())
+            .then(data => {
+                login(data.token, jwtToken)
+            })
+            .catch((err) => {
+                setMessage("Invalid Token")
+            });
+        }
+
+        function login(csrfToken, jwtToken) {
+            fetch(`${dashboardPrefix}api/v1/login`, {
+                "headers": {
+                    "content-type": "application/json",
+                    "x-csrf-token": `${csrfToken}`
+                },
+                "body": `{\"token\":\"${jwtToken}\"}`,
+                "method": "POST",
+            })
+            .then(response => response.json())
+            .then(data => {
+                onJweToken(data.jweToken);
+            }).catch(() => {
+                setMessage("Unable to verify token");
+            })
+        }
+
+        function onJweToken(jweToken) {
+            document.cookie = `jweToken=${jweToken}; path=/`;
+            window.location.href = `${dashboardPrefix}`
+        }
+
+        function setMessage(str) {
+            document.getElementById("message").innerHTML = str;
         }
     </script>
 </head>
+<title>Authenticating</title>
+<body onload="auth()">
+<p id="message">
+    Authenticating...
+</p>
+</body>
 </html>
