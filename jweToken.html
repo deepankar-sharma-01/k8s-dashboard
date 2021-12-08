@@ -1,0 +1,15 @@
+<html>
+<head>
+    <script type="text/javascript">
+        const params = new URLSearchParams(window.location.search)
+        if (params.has("token")) {
+            const encodedToken = params.get("token")
+            const token = decodeURIComponent(params.get("token"))
+            console.log(token)
+            document.cookie = `jweToken=${encodedToken}; path=/`;
+        } else {
+            console.log("No Token Found")
+        }
+    </script>
+</head>
+</html>

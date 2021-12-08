@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-dashboard-cookie-setter
+  labels:
+    app: k8s-dashboard-cookie-setter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-dashboard-cookie-setter
+  template:
+    metadata:
+      labels:
+        app: k8s-dashboard-cookie-setter
+    spec:
+      containers:
+        - name: jwe-cookie-setter
+          image: deeps95/jwe-cookie-setter:1.0.0
+          ports:
+            - containerPort: 80
+
