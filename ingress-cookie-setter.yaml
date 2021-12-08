@@ -1,14 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: k8s-dashboard
+  name: cookie-setter
 spec:
   ingressClassName: nginx
-  defaultBackend:
-    service:
-      name: kubernetes-dashboard
-      port:
-        number: 8443
   rules:
     - http:
         paths:

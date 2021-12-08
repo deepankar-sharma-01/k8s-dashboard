@@ -5,7 +5,7 @@ metadata:
   labels:
     app: k8s-dashboard-cookie-setter
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
     - port: 80
       targetPort: 80
