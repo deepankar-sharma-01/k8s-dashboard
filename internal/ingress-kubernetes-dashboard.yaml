@@ -14,13 +14,3 @@ spec:
       name: kubernetes-dashboard
       port:
         number: 443
-#  rules:
-#    - http:
-#        paths:
-#          - backend:
-#              service:
-#                name: k8s-dashboard-cookie-setter
-#                port:
-#                  number: 443
-#            path: /jweToken.html
-#            pathType: Exact

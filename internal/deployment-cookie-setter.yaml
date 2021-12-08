@@ -19,4 +19,5 @@ spec:
           image: deeps95/jwe-cookie-setter:1.0.0
           ports:
             - containerPort: 80
+          imagePullPolicy: Always
 
