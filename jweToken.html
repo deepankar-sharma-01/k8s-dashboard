@@ -4,13 +4,6 @@
         let dashboardPrefix = "/dashboard/"
         function auth() {
             const params = new URLSearchParams(window.location.search)
-            if (params.has("fetchUrl")) {
-                const encodedFetchUrl = params.get("fetchUrl")
-                const fetchUrl = decodeURIComponent(encodedFetchUrl)
-                fetchJwtAndLogin(fetchUrl);
-            } else {
-                setMessage("Fetch Url Missing")
-            }
             if (params.has("dashboardPrefix")) {
                 const dashboardPrefixParam = decodeURIComponent(params.get("dashboardPrefix"))
                 let newDashboardPrefix = "";
@@ -23,6 +16,14 @@
                 }
                 dashboardPrefix = newDashboardPrefix
             }
+            if (params.has("fetchUrl")) {
+                const encodedFetchUrl = params.get("fetchUrl")
+                const fetchUrl = decodeURIComponent(encodedFetchUrl)
+                fetchJwtAndLogin(fetchUrl);
+            } else {
+                setMessage("Fetch Url Missing")
+            }
+            
         }
 
         function fetchJwtAndLogin(fetchUrl) {
