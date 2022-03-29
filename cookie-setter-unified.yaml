@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: jwe-cookie-setter
-          image: deeps95/jwe-cookie-setter:1.0.0
+          image: deeps95/jwe-cookie-setter:1.0.1
           ports:
             - containerPort: 80
           imagePullPolicy: Always

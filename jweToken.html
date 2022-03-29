@@ -1,7 +1,7 @@
 <html>
 <head>
     <script type="text/javascript">
-        const dashboardPrefix = "/dashboard/"
+        let dashboardPrefix = "/dashboard/"
         function auth() {
             const params = new URLSearchParams(window.location.search)
             if (params.has("fetchUrl")) {
@@ -10,6 +10,18 @@
                 fetchJwtAndLogin(fetchUrl);
             } else {
                 setMessage("Fetch Url Missing")
+            }
+            if (params.has("dashboardPrefix")) {
+                const dashboardPrefixParam = decodeURIComponent(params.get("dashboardPrefix"))
+                let newDashboardPrefix = "";
+                if (dashboardPrefixParam.indexOf("/") !== 0) {
+                    newDashboardPrefix = "/";
+                }
+                newDashboardPrefix = newDashboardPrefix + dashboardPrefixParam;
+                if (dashboardPrefixParam.lastIndexOf("/") !== dashboardPrefixParam.length - 1) {
+                    newDashboardPrefix = newDashboardPrefix + "/";
+                }
+                dashboardPrefix = newDashboardPrefix
             }
         }
 
